@@ -47,7 +47,7 @@ void  GribReader::readMessageDetails() {
     section1Length = (static_cast<unsigned char>(buffer[0]) << 16) |
         (static_cast<unsigned char>(buffer[1]) << 8) |
         static_cast<unsigned char>(buffer[2]);
-    cout << "Dlugosc sekcji 1: " << section1Length << "\n";
+    
 
     // Sekcja 2
     gribFile.seekg(startSection0 + 8 + section1Length);
@@ -55,7 +55,7 @@ void  GribReader::readMessageDetails() {
     section2Length = (static_cast<unsigned char>(buffer[0]) << 16) |
         (static_cast<unsigned char>(buffer[1]) << 8) |
         static_cast<unsigned char>(buffer[2]);
-    cout << "Dlugosc sekcji 2: " << section2Length << "\n";
+    
 
     // Sekcja 3
     gribFile.seekg(startSection0 + 8 + section1Length + section2Length);
@@ -63,7 +63,7 @@ void  GribReader::readMessageDetails() {
     section3Length = (static_cast<unsigned char>(buffer[0]) << 16) |
         (static_cast<unsigned char>(buffer[1]) << 8) |
         static_cast<unsigned char>(buffer[2]);
-    cout << "Dlugosc sekcji 3: " << section3Length << "\n";
+    
 
     // Sekcja 4
     gribFile.seekg(startSection0 + 8 + section1Length + section2Length + section3Length);
@@ -71,7 +71,7 @@ void  GribReader::readMessageDetails() {
     section4Length = (static_cast<unsigned char>(buffer[0]) << 16) |
         (static_cast<unsigned char>(buffer[1]) << 8) |
         static_cast<unsigned char>(buffer[2]);
-    cout << "Dlugosc sekcji 4: " << section4Length << "\n";
+    
 
     // Sekcja 5
     gribFile.seekg(startSection0 + 8 + section1Length + section2Length + section3Length + section4Length);
@@ -79,7 +79,7 @@ void  GribReader::readMessageDetails() {
     section5Length = (static_cast<unsigned char>(buffer[0]) << 16) |
         (static_cast<unsigned char>(buffer[1]) << 8) |
         static_cast<unsigned char>(buffer[2]);
-    cout << "Dlugosc sekcji 5: " << section5Length << "\n";
+    
 
 
     gribFile.seekg(startSection0);
@@ -383,3 +383,5 @@ void GribReader::readSection2() {
 void GribReader::readSection3() {
     cout << "Dlugosc sekcji 3: " << section3Length << "\n";
 }
+
+
