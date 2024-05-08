@@ -1,0 +1,62 @@
+==========================
+==  General Message Info  ==
+==========================
+Grib Finda at pos: 40
+7777 Find at position: 4574
+Distance between end of GRIB and start of 7777: 4526
+Whole Message length: 4534
+==========================
+==  Section 1 Data  ==
+==========================
+Section length: 28
+Parameter Table Version: 2
+Identification of Centre: 7
+process id number: 81
+Grid Identification: 37
+GDS and BMS 128
+Unit parameters: 33
+Indicator of type of level or layer: 100
+Height, pressure, etc. of the level or layer: 850
+Rok: 1915
+Miesiac: 3
+Dzien: 10
+Godzina: 0
+Minuta: 0
+Time unit: 1
+P1 - Period of time: 0
+P2 - Period of time: 0
+Time range indicator : 10
+Number Missing from averages or accumulations: 0
+Reference century: 21
+Identification of sub Center: 0
+Decimal Scale factor: 1
+///
+==========================
+==  Section 2 Data  ==
+==========================
+Section length: 178
+Number of Vertical Coordinates: 0
+Octet number: 33
+Data representation type 0
+umbers of points along a latitude circle:65535
+umbers of points along a latitude circle:73
+Latitude: 0 degrees
+Longtitude: -30 degrees
+Direction increments given: No
+Earth model: Spherical, radius = 6367.47 km
+Vector components relative to: east and north directions
+Latitude: 90 degrees
+Longitude: 60 degrees
+Longitudinal Direction Increment:: -1
+Dlugosc sekcji 3: 4320
+
+C:\Users\01.08.2023\source\repos\main_grib\x64\Debug\main_grib.exe (proces 19652) zakończono z kodem 0.
+Aby automatycznie zamknąć konsolę po zatrzymaniu debugowania, włącz opcję Narzędzia -> Opcje -> Debugowanie -> Automatycznie zamknij konsolę po zatrzymaniu debugowania.
+Naciśnij dowolny klawisz, aby zamknąć to okno...
+
+
+
+
+
+
+
