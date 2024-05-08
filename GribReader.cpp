@@ -110,11 +110,11 @@ void  GribReader::readMessageDetails() {
 
     cout << "7777 Find at position: " << position7777 << "\n";
 
-    // Obliczanie odleg³oœci
+    // Obliczanie odlegÅ‚oÅ›ci
     uint32_t distanceBetweenEndOfGribAnd7777 = position7777 - (startSection0 + 8);
     cout << "Distance between end of GRIB and start of 7777: " << distanceBetweenEndOfGribAnd7777 << "\n";
 
-    // Ca³kowita d³ugoœæ wiadomoœci
+    // CaÅ‚kowita dÅ‚ugoÅ›Ä‡ wiadomoÅ›ci
     uint32_t wholeMessageLength = position7777 - startSection0;
     cout << "Whole Message length: " << wholeMessageLength << "\n";
 
@@ -158,10 +158,10 @@ void GribReader::readSection1() {
 
 
     gribFile.read(reinterpret_cast<char*>(&high_byte), 1);
-    // Czytanie ni¿szego bajtu
+    // Czytanie niÅ¼szego bajtu
     gribFile.read(reinterpret_cast<char*>(&low_byte), 1);
 
-    // £¹czenie bajtów w wartoœæ 16-bitow¹, uwzglêdniaj¹c big-endian
+    // ÅÄ…czenie bajtÃ³w w wartoÅ›Ä‡ 16-bitowÄ…, uwzglÄ™dniajÄ…c big-endian
     uint16_t height_pressure_etc = (high_byte << 8) | low_byte;
 
     
@@ -226,8 +226,10 @@ void GribReader::readSection2() {
 
 
     char buffer[2];
-    unsigned char latitude_last_high_byte, latitude_last_low_byte, longitude_last_high_byte, longitude_last_low_byte;
+    unsigned char lat_bytes[3], lon_bytes[3], di_bytes[2];
     uint16_t  Longtitude, Latitude, Latitude_show, Longtitude_show;
+    uint32_t Di;
+    double Di_show;
 
     cout << "==========================" << endl;
     cout << "==  Section 2 Data  ==" << endl;
@@ -291,15 +293,10 @@ void GribReader::readSection2() {
 
     gribFile.read(reinterpret_cast<char*>(&resolution_And_Component_Flags), 1);
 
-    // Odczyt wartoœci dla La2
-    gribFile.read(reinterpret_cast<char*>(&latitude_last_high_byte), 1);
-    gribFile.read(reinterpret_cast<char*>(&latitude_last_low_byte), 1);
-    
-
-    // Odczyt wartoœci dla Lo2
-    gribFile.read(reinterpret_cast<char*>(&longitude_last_high_byte), 1);
-    gribFile.read(reinterpret_cast<char*>(&longitude_last_low_byte), 1);
-    
+    // Odczyt trzech bajtÃ³w dla La2
+    gribFile.read(reinterpret_cast<char*>(lat_bytes), 3);
+    // Odczyt trzech bajtÃ³w dla Lo2
+    gribFile.read(reinterpret_cast<char*>(lon_bytes), 3);
     
 
     cout << "Number of Vertical Coordinates: " << static_cast<int>(vertical_Coordinates) << "\n";
@@ -351,26 +348,36 @@ void GribReader::readSection2() {
     
 
 
-    if (static_cast<int>(where_1) & 128) {
-        cout << "Latitude: -" << Latitude_show << " degrees" << "\n";
-    }
-    else {
-        cout << "Latitude: " << Latitude_show << " degrees" << "\n";
-    }
+    
+    int32_t latitude_value = (lat_bytes[0] << 16) | (lat_bytes[1] << 8) | lat_bytes[2];
+    int32_t longitude_value = (lon_bytes[0] << 16) | (lon_bytes[1] << 8) | lon_bytes[2];
 
-
-
-
-
-
-    if (static_cast<int>(where_2) & 128) {
-        cout << "Longtitude: -" << Longtitude_show << " degrees" << "\n";
-    }
-    else {
-        cout << "Longtitude: " << Longtitude_show << " degrees" << "\n";
+    
+    if (latitude_value & 0x800000) {
+        latitude_value |= 0xFF000000;  
+        latitude_value = -((~latitude_value + 1) & 0xFFFFFF);  // Ujemna wartoÅ›Ä‡
     }
 
+    if (longitude_value & 0x800000) {
+        longitude_value |= 0xFF000000;  
+        longitude_value = -((~longitude_value + 1) & 0xFFFFFF);  // Ujemna wartoÅ›Ä‡
+    }
+
+    cout << "Latitude: " << latitude_value / 1000.0 << " degrees" << "\n";
+    cout << "Longitude: " << longitude_value / 1000.0 << " degrees" << "\n";
   
+    
+    
+    gribFile.read(reinterpret_cast<char*>(di_bytes), 2);
+    Di = (static_cast<uint32_t>(di_bytes[0]) << 8) | static_cast<uint32_t>(di_bytes[1]);
+
+   
+    if (Di == 0xFFFF) {
+        Di_show = -1;
+        cout << "Longitudinal Direction Increment:: " << Di_show << "\n";
+    }
+
+
 }
 
 void GribReader::readSection3() {
